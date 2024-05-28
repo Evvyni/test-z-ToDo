@@ -1,0 +1,133 @@
+body {
+  font-family: Inter, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0d0714;
+  color: #e6e6e6;
+  height: 100vh;
+  margin: 0;
+
+}
+
+
+
+h1,
+h2 {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.AddNewTask {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 50px;
+  align-items: center;
+}
+
+input {
+  flex-grow: 1;
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #3e1671;
+  border-radius: 10px;
+  background-color: #1d1825;
+  color: #e6e6e6;
+  font-size: 16px;
+  outline: none;
+}
+.complete{
+  background-color: #1d1825;
+}
+.delete{
+  background-color: #1d1825;
+}
+div.task.todo {
+  width: 432px;
+  height: 75px;
+  top: 294px;
+  left: 504px;
+  margin-bottom: 10px;
+  border-radius: 10px 10px 10px 10px;
+  background-color: #15101c;
+  display: flex;
+  align-items: center;
+  display: flex;
+  justify-content:space-between;
+}
+div.task.todo > span {
+  color: #9e78cf;
+}
+div.task.done > span {
+  color: #78CFB0;
+  text-decoration: line-through;
+  size: 16px;
+}
+button#AddNewTaskButton{
+    padding: 8px 10px;
+    background-color: #9e78cf;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+  
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+div.task.done {
+  width: 432px;
+  height: 75px;
+  top: 294px;
+  left: 504px;
+  margin-bottom: 10px;
+  border-radius: 10px 10px 10px 10px;
+  background-color: #15101c;
+  display: flex;
+  align-items: center;
+}
+span {
+  color: #9e78cf;
+  margin-left: 15px;
+  size: 16px;
+
+}
+
+img{
+    width: 22px;
+    height: 22px;
+    top: 168px;
+    left: 905px;
+    padding: 2.75px 0px 0px 0px;
+    gap: 0px;
+    opacity: 0px;
+    
+}
+
+
+.task-list {
+  list-style: none;
+  padding: 0;
+}
+
+.task-list li {
+  background: #15101c;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #9e78cf;
+}
+
+.button-container {
+    display: flex;
+justify-content: space-around;
+}
+
+.task-list li.done {
+  text-decoration: line-through;
+  color: #78cfb0;
+  padding: 25px;
+}
+

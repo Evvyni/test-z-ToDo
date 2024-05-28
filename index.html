@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToDoApp</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <main>
+      <div class="container">
+        <div class="AddNewTask">
+          <input
+            type="text"
+            id="inputField"
+            placeholder="Добавить новую задачу"
+          />
+
+          <button id="AddNewTaskButton">
+            <img src="img/plus.png" alt="Кнопка «button»" />
+          </button>
+        </div>
+        <div class="taskS">
+          <h2>Задачи - <span id="TaskNum" style="color: aliceblue;">0</span></h2>
+          <div class="tasks" id="TaskContainer">
+          </div>
+        </div>
+        <div class="taskS">
+          <h2>Выполненные задачи - <span id="Done" style="color: aliceblue;">0</span></h2>
+          <div class="tasks" id="doneContainer"></div>
+        </div>
+      </div>
+    </main>
+    <script src="main.js"></script>
+  </body>
+</html>
