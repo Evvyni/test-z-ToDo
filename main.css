@@ -7,10 +7,7 @@ body {
   color: #e6e6e6;
   height: 100vh;
   margin: 0;
-
 }
-
-
 
 h1,
 h2 {
@@ -36,11 +33,17 @@ input {
   font-size: 16px;
   outline: none;
 }
-.complete{
+.complete {
   background-color: #1d1825;
+  margin-right: 10px;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
-.delete{
+.delete {
   background-color: #1d1825;
+  margin-right: 10px;
 }
 div.task.todo {
   width: 432px;
@@ -53,26 +56,27 @@ div.task.todo {
   display: flex;
   align-items: center;
   display: flex;
-  justify-content:space-between;
+  justify-content: space-between;
 }
 div.task.todo > span {
   color: #9e78cf;
 }
 div.task.done > span {
-  color: #78CFB0;
+  color: #78cfb0;
   text-decoration: line-through;
   size: 16px;
 }
-button#AddNewTaskButton{
-    padding: 8px 10px;
-    background-color: #9e78cf;
-    border: none;
-    color: white;
-    border-radius: 10px;
-    cursor: pointer;
-  
-    align-items: center;
-    transition: background-color 0.3s ease;
+button#AddNewTaskButton {
+  padding: 8px 10px;
+  background-color: #9e78cf;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  opacity: 0.3;
+
+  align-items: center;
+  transition: background-color 0.3s ease;
 }
 div.task.done {
   width: 432px;
@@ -89,20 +93,17 @@ span {
   color: #9e78cf;
   margin-left: 15px;
   size: 16px;
-
 }
 
-img{
-    width: 22px;
-    height: 22px;
-    top: 168px;
-    left: 905px;
-    padding: 2.75px 0px 0px 0px;
-    gap: 0px;
-    opacity: 0px;
-    
+img {
+  width: 22px;
+  height: 22px;
+  top: 168px;
+  left: 905px;
+  padding: 2.75px 0px 0px 0px;
+  gap: 0px;
+  opacity: 0px;
 }
-
 
 .task-list {
   list-style: none;
@@ -121,8 +122,8 @@ img{
 }
 
 .button-container {
-    display: flex;
-justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
 }
 
 .task-list li.done {
@@ -131,3 +132,23 @@ justify-content: space-around;
   padding: 25px;
 }
 
+.complete,
+.delete {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.complete img,
+.delete img {
+  width: 22px;
+  height: 22px;
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+
+.complete:hover img,
+.delete:hover img {
+  opacity: 0.3;
+}
