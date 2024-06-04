@@ -1,31 +1,70 @@
+
+class TaskStorage {
+    
+    static saveTasks(tasks) {
+        const serializedTasks = tasks.map(task => task.serialize());
+        localStorage.setItem('tasks', JSON.stringify(serializedTasks));
+    }
+
+    static loadTasks() {
+        const savedTasks = localStorage.getItem('tasks');
+        if (savedTasks) {
+            return JSON.parse(savedTasks);
+        }
+        return [];
+    }
+}
+
 class Task {
     constructor(title, onComplete, onDelete) {
         this.title = title;
+        this.completed = false;
         this.onComplete = onComplete;
         this.onDelete = onDelete;
+        
+        const storedTask = localStorage.getItem(`task_${this.title}`);
+        if (storedTask) {
+            const parsedTask = JSON.parse(storedTask);
+            this.completed = parsedTask.completed;
+        }
+
         this.element = this.createTaskElement();
     }
 
     createTaskElement() {
         const task = document.createElement('div');
-        task.className = 'task todo';
-        
+        task.className = this.completed ? 'task done' : 'task todo';
+
         const taskTitle = document.createElement('span');
         taskTitle.textContent = this.title;
-        
-        const buttonContainer = document.createElement('div');
-        buttonContainer.className = 'button-container';
-        
-        const completeButton = this.createButton('<img src="img/check.png">', 'complete', this.onComplete);
-        const deleteButton = this.createButton('<img src="img/basket.png">', 'delete', this.onDelete);
-        
-        buttonContainer.appendChild(completeButton);
-        buttonContainer.appendChild(deleteButton);
-        
         task.appendChild(taskTitle);
-        task.appendChild(buttonContainer);
-        
+
+        if (!this.completed) {
+            const buttonContainer = document.createElement('div');
+            buttonContainer.className = 'button-container';
+
+            const completeButton = this.createButton('<img src="img/check.png">', 'complete', this.onComplete);
+            const deleteButton = this.createButton('<img src="img/basket.png">', 'delete', this.onDelete);
+
+            buttonContainer.appendChild(completeButton);
+            buttonContainer.appendChild(deleteButton);
+            task.appendChild(buttonContainer);
+        }
+
         return task;
+    }
+
+    toggleComplete() {
+        this.completed = !this.completed;
+        this.element.className = this.completed ? 'task done' : 'task todo';
+        localStorage.setItem(`task_${this.title}`, JSON.stringify({ completed: this.completed }));
+
+        if (this.completed) {
+            const buttonContainer = this.element.querySelector('.button-container');
+            if (buttonContainer) {
+                buttonContainer.remove();
+            }
+        }
     }
 
     createButton(text, className, onClickHandler) {
@@ -34,6 +73,13 @@ class Task {
         button.className = className;
         button.onclick = onClickHandler;
         return button;
+    }
+
+    serialize() {
+        return {
+            title: this.title,
+            completed: this.completed
+        };
     }
 }
 
@@ -45,7 +91,7 @@ class TaskManager {
         this.doneContainer = document.getElementById('doneContainer');
         this.TaskNum = document.getElementById('TaskNum');
         this.Done = document.getElementById('Done');
-        
+
         this.tasks = [];
         
         this.AddNewTaskButton.addEventListener('click', () => this.addTask());
@@ -59,10 +105,7 @@ class TaskManager {
             return;
         }
 
-        const task = new Task(this.inputField.value, () => this.moveToDone(task.element), () => {
-            task.element.remove();
-            this.updateCounts();
-        });
+        const task = new Task(this.inputField.value, () => this.toggleTaskStatus(task), () => this.deleteTask(task));
 
         this.TaskContainer.appendChild(task.element);
         this.inputField.value = '';
@@ -70,42 +113,54 @@ class TaskManager {
         this.tasks.push(task);
         this.updateCounts();
         this.saveTasks();
-        this.updateCounts();
     }
 
     saveTasks() {
-        localStorage.setItem('tasks', JSON.stringify(this.tasks.map(task => task.title)));
+        TaskStorage.saveTasks(this.tasks);
     }
 
     loadTasks() {
-        const savedTasks = localStorage.getItem('tasks');
-        if (savedTasks) {
-            const taskTitles = JSON.parse(savedTasks);
-            taskTitles.forEach(title => {
-                const task = new Task(title, () => this.moveToDone(task.element), () => {
-                    task.element.remove();
-                    this.updateCounts();
-                    this.saveTasks();
-                });
-                this.tasks.push(task);
+        const tasksData = TaskStorage.loadTasks();
+        tasksData.forEach(data => {
+            const task = new Task(data.title, () => this.toggleTaskStatus(task), () => this.deleteTask(task));
+            task.completed = data.completed;
+            task.element.className = task.completed ? 'task done' : 'task todo';
+            if (task.completed) {
+                this.doneContainer.appendChild(task.element);
+            } else {
                 this.TaskContainer.appendChild(task.element);
-            });
-        }
+            }
+            this.tasks.push(task);
+        });
+        this.updateCounts();
     }
 
-    moveToDone(taskElement) {
-        taskElement.className = 'task done';
-        taskElement.querySelector('.complete').remove();
-        taskElement.querySelector('.delete').remove();
-
-        this.doneContainer.appendChild(taskElement);
+    toggleTaskStatus(task) {
+        task.toggleComplete();
+        if (task.completed) {
+            this.doneContainer.appendChild(task.element);
+        } else {
+            this.TaskContainer.appendChild(task.element);
+        }
         this.updateCounts();
+        this.saveTasks();
+    }
+
+    deleteTask(task) {
+        const index = this.tasks.indexOf(task);
+        if (index !== -1) {
+            this.tasks.splice(index, 1);
+            task.element.remove();
+            this.updateCounts();
+            this.saveTasks();
+        }
     }
 
     updateCounts() {
         this.TaskNum.textContent = this.TaskContainer.childElementCount;
         this.Done.textContent = this.doneContainer.childElementCount;
     }
+    
 }
 
 const taskManager = new TaskManager();
